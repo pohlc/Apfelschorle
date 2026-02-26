@@ -1,62 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-body {
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4) !important;
-  font-family: Arial !important;
-  text-align: center !important;
-  padding: 20px !important;
-}
-
-.felder {
-  display: flex !important;
-  justify-content: center !important;
-  gap: 20px !important;
-  margin: 20px 0 !important;
-  flex-wrap: wrap !important;
-}
-
-.feld {
-  width: 100px !important;
-  height: 100px !important;
-  background: white !important;
-  border: 5px solid black !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 20px !important;
-  font-weight: bold !important;
-  cursor: pointer !important;
-}
-
-.feld:hover {
-  background: yellow !important;
-  transform: scale(1.1) !important;
-}
-
-.breit {
-  width: 550px !important;
-  height: 60px !important;
-  font-size: 18px !important;
-}
-</style>
-</head>
-<body>
-<h1 style="color: white !important;">TEST ARBEITSBLATT</h1>
-
-<div class="felder">
-  <div class="feld" onclick="alert('Feld 1!')">1</div>
-  <div class="feld" onclick="alert('Feld 2!')">2</div>
-  <div class="feld" onclick="alert('Feld 3!')">3</div>
-  <div class="feld" onclick="alert('Feld 4!')">4</div>
-  <div class="feld" onclick="alert('Feld 5!')">5</div>
+```html
+<h1 style="color:red;">TEST</h1>
+<div style="display:flex;justify-content:center;gap:20px;">
+  <div style="width:100px;height:100px;background:red;border:5px solid black;color:white;">1</div>
+  <div style="width:100px;height:100px;background:green;border:5px solid black;color:white;">2</div>
+  <div style="width:100px;height:100px;background:blue;border:5px solid black;color:white;">3</div>
 </div>
-
-<div class="felder">
-  <div class="feld breit" onclick="alert('Feld 6 breit!')">FELD 6 BREIT</div>
-</div>
-
-<p style="color: white !important;">Falls du die 6 Boxen siehst → ERFOLG!</p>
-</body>
-</html>
