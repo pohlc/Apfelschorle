@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Interaktives Arbeitsblatt</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+	  /* NEU: Hintergrundbild */
+ 	background-image: url('Apfelschorle.png');  /* Deinen Bildnamen hier */
+  	background-size: cover;        /* Bild füllt ganze Fläche */
+  	background-position: center;   /* Bild zentriert */
+  	background-repeat: no-repeat;  /* Nicht kacheln */
+  	background-attachment: fixed;  /* Bild bleibt beim Scrollen */
+  	min-height: 100vh;             /* Mindesthöhe = Bildschirm */
+	Color: White;
+    }
+
+    .feld-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;  /* Zentriert die Reihe */
+  margin-bottom: 10px;
+}
+
+.feld-container.unterhalb {
+  justify-content: center;  /* Zentriert die breite Box */
+}
+    
+   .feld-container.oben,
+.feld-container.unten {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: calc(5 * 100px + 4 * 20px); /* 5 Boxen à 100px + 4 Abstände à 20px */
+  margin-top: 30px;
+}
+
+.feld {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 8px;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  background-color: #008000;
+}
+
+.feld.breit {
+  width: 100%;   /* Genauso breit wie der Container (also wie alle 5 Boxen + Abstände) */
+  height: 50px;  /* halb so hoch wie die 100px-Boxen */
+}
+
+
+    .feld:hover {
+      background-color: #e0e0e0;
+    }
+
+    .feld-x {
+      position: absolute;
+      top: 5px;
+      right: 8px;
+      font-weight: bold;
+      color: red;
+      font-size: 25px;
+    }
+
+    /* Einfaches Popup-Fenster (Modal) */
+    .modal-hintergrund {
+      display: none; /* wird per JS auf block gestellt */
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(210,236,238,0.8);
+    }
+
+    .modal-inhalt {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      position: relative;
+      Color: black;
+    }
+
+    .modal-schliessen {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+
+  <h1>Noch fünf Wochen Apfelschorle</h1>
+  <p>Klicke jeden folgenden Mittwoch auf ein Feld, um zu sehen, wie nahe Fasten und Bergsteigen sind.</p>
+
+  <div class="feld-container oben">
+    <div class="feld" data-id="1">Noch fünf Wochen...</div>
+    <div class="feld" data-id="2">Noch vier Wochen</div>
+    <div class="feld" data-id="3">Noch drei Wochen</div>
+    <div class="feld" data-id="4">Noch zwei Wochen</div>
+    <div class="feld" data-id="5">Noch diese Woche</div>
+  </div>
+<div class="feld-container unten">
+    <div class="feld breit" data-id="6">Durchgehalten?
+</div>
+
+  <!-- Modal-Fenster -->
+  <div id="modal" class="modal-hintergrund">
+    <div class="modal-inhalt">
+      <span id="modalSchliessen" class="modal-schliessen">&times;</span>
+      <h2 id="modalTitel"></h2>
+      <p id="modalText"></p>
+    </div>
+  </div>
+
+  <script>
+    // Texte, die zu den 5 Feldern gehören
+    const feldTexte = {
+      1: {
+        titel: "Edmund Hillary",
+        text: "„Nicht der Berg ist es, den man bezwingt, sondern das eigene Ich.“"
+      },
+      2: {
+        titel: "Reinhold Messner",
+        text: "„Die Berge, die es zu versetzen gilt, sind in unserem Bewusstsein.“"
+      },
+      3: {
+        titel: "Gregor Sieböck",
+        text: "„Die große Herausforderung besteht darin, überhaupt aufzubrechen, vermeintliche Sicherheiten hinter sich zu lassen und stattdessen der Ungewissheit des Weges zu begegnen. Der Weg entsteht dann wie von selbst.“"
+      },
+      4: {
+        titel: "Wanda Rutkiewicz",
+        text: "„In den Bergen ist Freiheit.“"
+      },
+      5: {
+        titel: "Ines Papert",
+        text: "„Ganz oben zu sein, die Schwierigkeiten überwunden zu haben, ohne Angst, als eine gemeinsame Leistung - das ist das beste Gefühl überhaupt.“"
+      },
+  6: {  /* NEU: Für Feld 6 */
+    titel: "",  
+    text: "Das ist ein Bier wert!"
+     }
+    };
+
+    const felder = document.querySelectorAll(".feld");
+    const modal = document.getElementById("modal");
+    const modalTitel = document.getElementById("modalTitel");
+    const modalText = document.getElementById("modalText");
+    const modalSchliessen = document.getElementById("modalSchliessen");
+
+    let aktuellesFeld = null;
+
+    felder.forEach(feld => {
+      feld.addEventListener("click", () => {
+        const id = feld.getAttribute("data-id");
+        aktuellesFeld = feld;
+
+        modalTitel.textContent = feldTexte[id].titel;
+        modalText.textContent = feldTexte[id].text;
+
+        modal.style.display = "block";
+      });
+    });
+
+    // Modal schließen (X im Modal)
+    modalSchliessen.addEventListener("click", () => {
+      modal.style.display = "none";
+      markiereFeldMitX();
+    });
+
+    // Modal schließen beim Klick neben das Fenster
+    window.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+        markiereFeldMitX();
+      }
+    });
+
+    function markiereFeldMitX() {
+      if (!aktuellesFeld) return;
+
+      // Prüfen, ob es schon ein X gibt
+      if (!aktuellesFeld.querySelector(".feld-x")) {
+        const xSpan = document.createElement("span");
+        xSpan.classList.add("feld-x");
+        xSpan.textContent = "X";
+        aktuellesFeld.appendChild(xSpan);
+      }
+    }
+  </script>
+
+</body>
+</html>
