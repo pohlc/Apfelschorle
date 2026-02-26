@@ -4,123 +4,166 @@
   <meta charset="UTF-8">
   <title>Interaktives Arbeitsblatt</title>
   <style>
+    * {
+      box-sizing: border-box !important;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-	  /* NEU: Hintergrundbild */
- 	background-image: url('Apfelschorle.png');  /* Deinen Bildnamen hier */
-  	background-size: cover;        /* Bild füllt ganze Fläche */
-  	background-position: center;   /* Bild zentriert */
-  	background-repeat: no-repeat;  /* Nicht kacheln */
-  	background-attachment: fixed;  /* Bild bleibt beim Scrollen */
-  	min-height: 100vh;             /* Mindesthöhe = Bildschirm */
-	Color: White;
+      font-family: Arial, sans-serif !important;
+      padding: 20px !important;
+      margin: 0 !important;
+      background-image: url('hintergrund.jpg') !important;
+      background-size: cover !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      background-attachment: fixed !important;
+      min-height: 100vh !important;
+      color: white !important;
+      line-height: 1.4 !important;
+    }
+
+    h1 {
+      text-align: center !important;
+      margin-bottom: 20px !important;
+    }
+
+    p {
+      text-align: center !important;
+      margin-bottom: 30px !important;
     }
 
     .feld-container {
-  display: flex;
-  gap: 20px;
-  justify-content: center;  /* Zentriert die Reihe */
-  margin-bottom: 10px;
-}
+      display: flex !important;
+      gap: 20px !important;
+      justify-content: center !important;
+      margin-bottom: 10px !important;
+      flex-wrap: wrap !important;
+      width: 100% !important;
+    }
 
-.feld-container.unterhalb {
-  justify-content: center;  /* Zentriert die breite Box */
-}
-    
-   .feld-container.oben,
-.feld-container.unten {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  width: calc(5 * 100px + 4 * 20px); /* 5 Boxen à 100px + 4 Abstände à 20px */
-  margin-top: 30px;
-}
+    .feld-container.unterhalb {
+      justify-content: center !important;
+    }
 
-.feld {
-  width: 100px;
-  height: 100px;
-  border: 2px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-left: 8px;
-  cursor: pointer;
-  user-select: none;
-  position: relative;
-  background-color: #008000;
-}
-
-.feld.breit {
-  width: 100%;   /* Genauso breit wie der Container (also wie alle 5 Boxen + Abstände) */
-  height: 50px;  /* halb so hoch wie die 100px-Boxen */
-}
-
+    .feld {
+      width: 100px !important;
+      height: 100px !important;
+      border: 3px solid #333 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      padding-left: 8px !important;
+      cursor: pointer !important;
+      user-select: none !important;
+      position: relative !important;
+      background-color: rgba(255,255,255,0.9) !important;
+      flex: 1 !important;
+      max-width: 100px !important;
+      font-weight: bold !important;
+      transition: all 0.3s ease !important;
+    }
 
     .feld:hover {
-      background-color: #e0e0e0;
+      background-color: rgba(255,255,255,1) !important;
+      transform: scale(1.05) !important;
+      border-color: #666 !important;
+    }
+
+    .feld.breit {
+      width: 100% !important;
+      height: 50px !important;
+      max-width: none !important;
+      font-size: 16px !important;
     }
 
     .feld-x {
-      position: absolute;
-      top: 5px;
-      right: 8px;
-      font-weight: bold;
-      color: red;
-      font-size: 25px;
+      position: absolute !important;
+      top: 5px !important;
+      right: 8px !important;
+      font-weight: bold !important;
+      color: red !important;
+      font-size: 20px !important;
+      z-index: 10 !important;
     }
 
-    /* Einfaches Popup-Fenster (Modal) */
+    /* Modal */
     .modal-hintergrund {
-      display: none; /* wird per JS auf block gestellt */
-      position: fixed;
-      z-index: 10;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(210,236,238,0.8);
+      display: none !important;
+      position: fixed !important;
+      z-index: 1000 !important;
+      left: 0 !important;
+      top: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      background-color: rgba(0,0,0,0.7) !important;
+      backdrop-filter: blur(5px) !important;
     }
 
     .modal-inhalt {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-      max-width: 500px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      position: relative;
-      Color: black;
+      background-color: rgba(255,255,255,0.95) !important;
+      margin: 10% auto !important;
+      padding: 30px !important;
+      border: 2px solid #333 !important;
+      border-radius: 10px !important;
+      width: 90% !important;
+      max-width: 600px !important;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.5) !important;
+      position: relative !important;
+      color: black !important;
+      max-height: 70vh !important;
+      overflow-y: auto !important;
     }
 
     .modal-schliessen {
-      position: absolute;
-      top: 8px;
-      right: 12px;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
+      position: absolute !important;
+      top: 10px !important;
+      right: 15px !important;
+      font-size: 28px !important;
+      font-weight: bold !important;
+      cursor: pointer !important;
+      color: #666 !important;
+      width: 30px !important;
+      height: 30px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
     }
 
+    .modal-schliessen:hover {
+      color: #333 !important;
+      background: rgba(0,0,0,0.1) !important;
+      border-radius: 50% !important;
+    }
+
+    #modalTitel {
+      margin-top: 0 !important;
+      color: #333 !important;
+      border-bottom: 2px solid #007bff !important;
+      padding-bottom: 10px !important;
+    }
+
+    #modalText {
+      line-height: 1.6 !important;
+      margin-bottom: 20px !important;
+    }
   </style>
 </head>
 <body>
 
+  <h1>Interaktives Arbeitsblatt</h1>
+  <p>Klicke auf ein Feld, um den Text zu sehen. Nach dem Lesen wird das Feld mit einem X markiert.</p>
 
-  <h1>Noch fünf Wochen Apfelschorle</h1>
-  <p>Klicke jeden folgenden Mittwoch auf ein Feld, um zu sehen, wie nahe Fasten und Bergsteigen sind.</p>
-
-  <div class="feld-container oben">
-    <div class="feld" data-id="1">Noch fünf Wochen...</div>
-    <div class="feld" data-id="2">Noch vier Wochen</div>
-    <div class="feld" data-id="3">Noch drei Wochen</div>
-    <div class="feld" data-id="4">Noch zwei Wochen</div>
-    <div class="feld" data-id="5">Noch diese Woche</div>
+  <div class="feld-container">
+    <div class="feld" data-id="1">Feld 1</div>
+    <div class="feld" data-id="2">Feld 2</div>
+    <div class="feld" data-id="3">Feld 3</div>
+    <div class="feld" data-id="4">Feld 4</div>
+    <div class="feld" data-id="5">Feld 5</div>
   </div>
-<div class="feld-container unten">
-    <div class="feld breit" data-id="6">Durchgehalten?
-</div>
+
+  <div class="feld-container unterhalb">
+    <div class="feld breit" data-id="6">Feld 6 (breit)</div>
+  </div>
 
   <!-- Modal-Fenster -->
   <div id="modal" class="modal-hintergrund">
@@ -132,34 +175,17 @@
   </div>
 
   <script>
-    // Texte, die zu den 5 Feldern gehören
+    // Texte für alle 6 Felder
     const feldTexte = {
-      1: {
-        titel: "Edmund Hillary",
-        text: "„Nicht der Berg ist es, den man bezwingt, sondern das eigene Ich.“"
-      },
-      2: {
-        titel: "Reinhold Messner",
-        text: "„Die Berge, die es zu versetzen gilt, sind in unserem Bewusstsein.“"
-      },
-      3: {
-        titel: "Gregor Sieböck",
-        text: "„Die große Herausforderung besteht darin, überhaupt aufzubrechen, vermeintliche Sicherheiten hinter sich zu lassen und stattdessen der Ungewissheit des Weges zu begegnen. Der Weg entsteht dann wie von selbst.“"
-      },
-      4: {
-        titel: "Wanda Rutkiewicz",
-        text: "„In den Bergen ist Freiheit.“"
-      },
-      5: {
-        titel: "Ines Papert",
-        text: "„Ganz oben zu sein, die Schwierigkeiten überwunden zu haben, ohne Angst, als eine gemeinsame Leistung - das ist das beste Gefühl überhaupt.“"
-      },
-  6: {  /* NEU: Für Feld 6 */
-    titel: "",  
-    text: "Das ist ein Bier wert!"
-     }
+      1: { titel: "Text zu Feld 1", text: "Hier steht der Text, der erscheinen soll, wenn auf Feld 1 geklickt wird." },
+      2: { titel: "Text zu Feld 2", text: "Hier steht der Text zu Feld 2. Du kannst beliebige Inhalte einsetzen." },
+      3: { titel: "Text zu Feld 3", text: "Beispieltext für Feld 3. Dieser Text kann natürlich fachliche Inhalte enthalten." },
+      4: { titel: "Text zu Feld 4", text: "Hier folgt der Text zu Feld 4." },
+      5: { titel: "Text zu Feld 5", text: "Dies ist der Text zu Feld 5." },
+      6: { titel: "", text: "Hier kommt dein Inhalt für die breite Box unten hin. Kann länger sein als die anderen Texte!" }
     };
 
+    // Elemente holen
     const felder = document.querySelectorAll(".feld");
     const modal = document.getElementById("modal");
     const modalTitel = document.getElementById("modalTitel");
@@ -168,39 +194,51 @@
 
     let aktuellesFeld = null;
 
+    // Klick-Handler für alle Felder
     felder.forEach(feld => {
-      feld.addEventListener("click", () => {
-        const id = feld.getAttribute("data-id");
-        aktuellesFeld = feld;
+      feld.addEventListener("click", function() {
+        const id = this.getAttribute("data-id");
+        aktuellesFeld = this;
 
-        modalTitel.textContent = feldTexte[id].titel;
+        modalTitel.textContent = feldTexte[id].titel || "";
         modalText.textContent = feldTexte[id].text;
 
         modal.style.display = "block";
+        document.body.style.overflow = "hidden";
       });
     });
 
-    // Modal schließen (X im Modal)
-    modalSchliessen.addEventListener("click", () => {
+    // Modal schließen
+    modalSchliessen.addEventListener("click", function() {
       modal.style.display = "none";
+      document.body.style.overflow = "auto";
       markiereFeldMitX();
     });
 
-    // Modal schließen beim Klick neben das Fenster
-    window.addEventListener("click", (event) => {
+    // Klick außerhalb Modal
+    window.addEventListener("click", function(event) {
       if (event.target === modal) {
         modal.style.display = "none";
+        document.body.style.overflow = "auto";
+        markiereFeldMitX();
+      }
+    });
+
+    // ESC-Taste
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape" && modal.style.display === "block") {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
         markiereFeldMitX();
       }
     });
 
     function markiereFeldMitX() {
       if (!aktuellesFeld) return;
-
-      // Prüfen, ob es schon ein X gibt
+      
       if (!aktuellesFeld.querySelector(".feld-x")) {
         const xSpan = document.createElement("span");
-        xSpan.classList.add("feld-x");
+        xSpan.className = "feld-x";
         xSpan.textContent = "X";
         aktuellesFeld.appendChild(xSpan);
       }
